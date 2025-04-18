@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
@@ -50,7 +49,7 @@ export default function 공사보고생성기() {
 
   const handle현장추가 = () => {
     if (!현장명 || 현장목록.includes(현장명)) {
-      show('추가할 현장명을 입력해주세요')
+      show('이미 있는 현장명이거나 비어있습니다.')
       return
     }
     set현장목록([현장명, ...현장목록])
@@ -83,6 +82,7 @@ export default function 공사보고생성기() {
 
   return (
     <div className="max-w-xl mx-auto p-4 space-y-6">
+      {/* 현장명 입력 */}
       <Card>
         <CardContent className="space-y-4">
           <div>
@@ -118,6 +118,7 @@ export default function 공사보고생성기() {
             </div>
           </div>
 
+          {/* 오늘/내일 공정 */}
           <div>
             <Label>오늘 공정</Label>
             <div className="flex flex-wrap gap-2">
@@ -135,7 +136,6 @@ export default function 공사보고생성기() {
               ))}
             </div>
           </div>
-
           <div>
             <Label>내일 공정</Label>
             <div className="flex flex-wrap gap-2">
@@ -154,6 +154,7 @@ export default function 공사보고생성기() {
             </div>
           </div>
 
+          {/* 특이사항 */}
           <div>
             <Label>특이사항</Label>
             <Textarea
@@ -163,6 +164,7 @@ export default function 공사보고생성기() {
             />
           </div>
 
+          {/* 보고서 생성 버튼 */}
           <Button
             onClick={generate}
             className="w-full active:scale-[0.98] transition"
@@ -172,6 +174,7 @@ export default function 공사보고생성기() {
         </CardContent>
       </Card>
 
+      {/* 결과 출력 & 복사 */}
       {결과 && (
         <Card>
           <CardContent className="whitespace-pre-wrap space-y-2">

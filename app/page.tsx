@@ -49,7 +49,7 @@ export default function 공사보고생성기() {
 
   const handle현장추가 = () => {
     if (!현장명 || 현장목록.includes(현장명)) {
-      show('이미 있는 현장명이거나 비어있습니다.')
+      show('이미 있는 현장이거나 빈칸입니다.')
       return
     }
     set현장목록([현장명, ...현장목록])

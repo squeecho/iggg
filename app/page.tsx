@@ -1,13 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Textarea } from '@/components/ui/textarea'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { useToast } from '@/components/ui/use-toast'
-import { Toast } from '@/components/ui/toast'
+import { Button } from '../components/ui/button'
+import { Card, CardContent } from '../components/ui/card'
+import { Textarea } from '../components/ui/textarea'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { useToast } from '../components/ui/use-toast'
 
 const 공정항목 = [
   '철거', '자재 입고', '가설', '목공', '전기', '금속', '설비', '방수',
@@ -23,7 +22,7 @@ export default function 공사보고생성기() {
   const [내일공정, set내일공정] = useState<string[]>([])
   const [특이사항, set특이사항] = useState('금일 특이사항 없습니다.')
   const [결과, set결과] = useState('')
-  const { show } = useToast()
+  const { show, Toast } = useToast()
 
   useEffect(() => {
     const saved현장명 = localStorage.getItem('현장명')
@@ -41,11 +40,7 @@ export default function 공사보고생성기() {
   }, [현장목록])
 
   const handleToggle = (value: string, list: string[], setList: (list: string[]) => void) => {
-    if (list.includes(value)) {
-      setList(list.filter(i => i !== value))
-    } else {
-      setList([...list, value])
-    }
+    setList(list.includes(value) ? list.filter(i => i !== value) : [...list, value])
   }
 
   const handle현장추가 = () => {
@@ -71,12 +66,20 @@ export default function 공사보고생성기() {
 
   return (
     <div className="max-w-xl mx-auto p-4 space-y-6">
+      {/* Toast 컴포넌트는 최상단에 배치 */}
+      <Toast />
+
       <Card>
         <CardContent className="space-y-4">
+          {/* 현장명 입력 & 관리 */}
           <div>
             <Label>현장명</Label>
             <div className="flex gap-2">
-              <Input value={현장명} onChange={e => set현장명(e.target.value)} placeholder="예: 이견공간 뉴욕점" />
+              <Input
+                value={현장명}
+                onChange={e => set현장명(e.target.value)}
+                placeholder="예: 이견공간 뉴욕점"
+              />
               <Button onClick={handle현장추가}>추가</Button>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
@@ -89,11 +92,17 @@ export default function 공사보고생성기() {
             </div>
           </div>
 
+          {/* 오늘 / 내일 공정 */}
           <div>
             <Label>오늘 공정</Label>
             <div className="flex flex-wrap gap-2">
               {공정항목.map(item => (
-                <Button key={item} variant={오늘공정.includes(item) ? 'default' : 'outline'} size="sm" onClick={() => handleToggle(item, 오늘공정, set오늘공정)}>
+                <Button
+                  key={item}
+                  variant={오늘공정.includes(item) ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => handleToggle(item, 오늘공정, set오늘공정)}
+                >
                   {item}
                 </Button>
               ))}
@@ -103,29 +112,44 @@ export default function 공사보고생성기() {
             <Label>내일 공정</Label>
             <div className="flex flex-wrap gap-2">
               {공정항목.map(item => (
-                <Button key={item} variant={내일공정.includes(item) ? 'default' : 'outline'} size="sm" onClick={() => handleToggle(item, 내일공정, set내일공정)}>
+                <Button
+                  key={item}
+                  variant={내일공정.includes(item) ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => handleToggle(item, 내일공정, set내일공정)}
+                >
                   {item}
                 </Button>
               ))}
             </div>
           </div>
+
+          {/* 특이사항 */}
           <div>
             <Label>특이사항</Label>
-            <Textarea value={특이사항} onChange={e => set특이사항(e.target.value)} placeholder="없음 또는 특이사항 메모" />
+            <Textarea
+              value={특이사항}
+              onChange={e => set특이사항(e.target.value)}
+              placeholder="없음 또는 특이사항 메모"
+            />
           </div>
+
+          {/* 보고서 생성 */}
           <Button onClick={generate} className="w-full active:scale-[0.98] transition">보고서 생성</Button>
         </CardContent>
       </Card>
 
+      {/* 결과 출력 & 복사 */}
       {결과 && (
         <Card>
           <CardContent className="whitespace-pre-wrap space-y-2">
             <div>{결과}</div>
-            <Button onClick={() => copyToClipboard(결과)} className="mt-2 w-full active:scale-[0.98] transition">보고서 복사하기</Button>
+            <Button onClick={() => copyToClipboard(결과)} className="mt-2 w-full active:scale-[0.98] transition">
+              보고서 복사하기
+            </Button>
           </CardContent>
         </Card>
       )}
-      <Toast />
     </div>
-  )
+)
 }

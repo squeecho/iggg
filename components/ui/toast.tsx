@@ -1,11 +1,16 @@
-import { useState } from 'react'
+'use client'
+
+import { useEffect, useState } from 'react'
+
+let timeout: NodeJS.Timeout
 
 export function useToast() {
-  const [message, setMessage] = useState<string | null>(null)
+  const [message, setMessage] = useState('')
 
   const show = (msg: string) => {
     setMessage(msg)
-    setTimeout(() => setMessage(null), 2000)
+    clearTimeout(timeout)
+    timeout = setTimeout(() => setMessage(''), 2000)
   }
 
   const Toast = () =>
@@ -16,12 +21,12 @@ export function useToast() {
           bottom: '30px',
           left: '50%',
           transform: 'translateX(-50%)',
-          background: '#333',
-          color: '#fff',
-          padding: '10px 16px',
-          borderRadius: '8px',
+          background: 'black',
+          color: 'white',
+          padding: '10px 20px',
+          borderRadius: '10px',
           fontSize: '14px',
-          zIndex: 9999,
+          zIndex: 1000,
         }}
       >
         {message}

@@ -17,7 +17,7 @@ export default function 공사보고생성기() {
   const [내일공정, set내일공정] = useState<string[]>([])
   const [특이사항, set특이사항] = useState('금일 특이사항 없습니다.')
   const [결과, set결과] = useState('')
-  const { toast } = useToast()
+  const { show } = useToast()
 
   useEffect(() => {
     const saved현장명 = localStorage.getItem('현장명')
@@ -60,7 +60,7 @@ export default function 공사보고생성기() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
-    toast({ description: '복사되었습니다.' })
+    show({ description: '복사되었습니다.' })
   }
 
   return (

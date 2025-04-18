@@ -13,7 +13,7 @@ export function useToast() {
     timeout = setTimeout(() => setMessage(''), 2000)
   }
 
-  const Toast = () => (
+  const Toast = () =>
     message ? (
       <div
         style={{
@@ -33,7 +33,6 @@ export function useToast() {
         {message}
       </div>
     ) : null
-  )
 
   return { show, Toast }
 }

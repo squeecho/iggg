@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
@@ -20,7 +20,7 @@ export default function 공사보고생성기() {
   const [내일공정, set내일공정] = useState<string[]>([])
   const [특이사항, set특이사항] = useState('금일 특이사항 없습니다.')
   const [결과, set결과] = useState('')
-  const [복사완료, set복사완료] = useState('')
+  const [토스트, set토스트] = useState('')
 
   const handleToggle = (value: string, list: string[], setList: Function) => {
     if (list.includes(value)) {
@@ -37,8 +37,8 @@ export default function 공사보고생성기() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
-      set복사완료('📋 복사되었습니다!')
-      setTimeout(() => set복사완료(''), 2000)
+      set토스트('📋 복사되었습니다!')
+      setTimeout(() => set토스트(''), 2000)
     })
   }
 
@@ -82,24 +82,26 @@ export default function 공사보고생성기() {
           </div>
           <div>
             <Label>특이사항</Label>
-            <Textarea value={특이사항} onChange={e => set특이사항(e.target.value)} />
+            <Textarea value={특이사항} onChange={e => set특이사항(e.target.value)} placeholder="없음 또는 특이사항 메모" />
           </div>
           <Button onClick={generate} className="w-full">보고서 생성</Button>
         </CardContent>
       </Card>
 
       {결과 && (
-        <Card>
-          <CardContent className="whitespace-pre-wrap space-y-2">
-            <div>{결과}</div>
-            <Button onClick={() => copyToClipboard(결과)} className="mt-2 w-full">📋 보고서 복사하기</Button>
-          </CardContent>
-        </Card>
+        <div className="space-y-4">
+          <Card>
+            <CardContent className="whitespace-pre-wrap space-y-2">
+              <div>{결과}</div>
+              <Button onClick={() => copyToClipboard(결과)} className="mt-2 w-full">📋 보고서 복사하기</Button>
+            </CardContent>
+          </Card>
+        </div>
       )}
 
-      {복사완료 && (
+      {토스트 && (
         <div className="fixed bottom-4 right-4 bg-black text-white text-sm px-4 py-2 rounded-lg shadow">
-          {복사완료}
+          {토스트}
         </div>
       )}
     </div>

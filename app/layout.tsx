@@ -1,4 +1,3 @@
-
 import './globals.css'
 import Image from 'next/image'
 
@@ -16,7 +15,7 @@ export default function RootLayout({
     <html lang="ko">
       <head />
       <body className="bg-gray-50">
-        {/* 상단 헤더: 로고 한 번만 */}
+        {/* 헤더: 로고 */}
         <header className="bg-white shadow">
           <div className="max-w-xl mx-auto py-4 flex justify-center">
             <Image
@@ -30,9 +29,7 @@ export default function RootLayout({
         </header>
 
         {/* 메인 컨텐츠 */}
-        <main className="max-w-xl mx-auto p-4">
-          {children}
-        </main>
+        <main className="max-w-xl mx-auto p-4">{children}</main>
       </body>
     </html>
   )

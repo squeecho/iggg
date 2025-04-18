@@ -1,24 +1,19 @@
-// app/layout.tsx
 import './globals.css'
 import { ReactNode } from 'react'
 import Image from 'next/image'
-import { ToastProvider } from '@/components/ui/use-toast'  // ← 요기
+import { ToastProvider } from '@/components/ui/use-toast'
 
 export const metadata = {
   title: '공사보고 자동화',
   description: '클릭 한 번으로 공사보고 자동 생성',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <head />
       <body className="bg-gray-50">
-        <ToastProvider>   {/* ← 요기 */}
+        <ToastProvider>
           <header className="bg-white py-4 shadow-sm">
             <div className="max-w-xl mx-auto flex items-center justify-center">
               <Image
@@ -31,7 +26,7 @@ export default function RootLayout({
             </div>
           </header>
           <main className="py-6">{children}</main>
-        </ToastProvider>  {/* ← 요기 */}
+        </ToastProvider>
       </body>
     </html>
   )

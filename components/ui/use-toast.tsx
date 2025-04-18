@@ -5,7 +5,6 @@ import {
   useContext,
   useState,
   ReactNode,
-  useEffect,
 } from 'react'
 
 type ToastContextValue = {
@@ -19,7 +18,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   function show(msg: string) {
     setMessage(msg)
-    // 3초 후 자동 사라짐
     setTimeout(() => setMessage(null), 3000)
   }
 
@@ -39,6 +37,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
 export function useToast() {
   const ctx = useContext(ToastContext)
-  if (!ctx) throw new Error('useToast must be used within a ToastProvider')
+  if (!ctx) throw new Error('useToast must be inside ToastProvider')
   return ctx
 }

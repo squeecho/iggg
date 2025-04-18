@@ -1,3 +1,4 @@
+import './globals.css'
 export const metadata = {
   title: '공사보고 자동화',
   description: '클릭 한 번으로 공사보고 자동 생성',

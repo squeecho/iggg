@@ -1,38 +1,44 @@
 'use client'
 
-import { useState, useEffect, ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react'
 
-type ToastOptions = { description: string }
+type ToastContextValue = {
+  show: (message: string) => void
+}
+
+const ToastContext = createContext<ToastContextValue | null>(null)
+
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const [message, setMessage] = useState<string | null>(null)
+
+  function show(msg: string) {
+    setMessage(msg)
+    // 3초 후 자동 사라짐
+    setTimeout(() => setMessage(null), 3000)
+  }
+
+  return (
+    <ToastContext.Provider value={{ show }}>
+      {children}
+      {message && (
+        <div
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-2 rounded shadow-lg"
+        >
+          {message}
+        </div>
+      )}
+    </ToastContext.Provider>
+  )
+}
 
 export function useToast() {
-  const [message, setMessage] = useState<ToastOptions | null>(null)
-
-  function show(opts: string | ToastOptions) {
-    if (typeof opts === 'string') {
-      setMessage({ description: opts })
-    } else {
-      setMessage(opts)
-    }
-  }
-
-  useEffect(() => {
-    if (message) {
-      const timer = setTimeout(() => setMessage(null), 2000)
-      return () => clearTimeout(timer)
-    }
-  }, [message])
-
-  function Toast() {
-    if (!message) return null
-    return (
-      <div
-        className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-md shadow-lg"
-        style={{ zIndex: 9999 }}
-      >
-        {message.description}
-      </div>
-    )
-  }
-
-  return { show, Toast }
+  const ctx = useContext(ToastContext)
+  if (!ctx) throw new Error('useToast must be used within a ToastProvider')
+  return ctx
 }

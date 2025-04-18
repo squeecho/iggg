@@ -2,7 +2,7 @@
 import './globals.css'
 import { ReactNode } from 'react'
 import Image from 'next/image'
-import { ToastProvider } from '@/components/ui/use-toast'
+import { ToastProvider } from '@/components/ui/use-toast'  // ← 요기
 
 export const metadata = {
   title: '공사보고 자동화',
@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="ko">
       <head />
       <body className="bg-gray-50">
-        <ToastProvider>
+        <ToastProvider>   {/* ← 요기 */}
           <header className="bg-white py-4 shadow-sm">
             <div className="max-w-xl mx-auto flex items-center justify-center">
               <Image
@@ -31,7 +31,7 @@ export default function RootLayout({
             </div>
           </header>
           <main className="py-6">{children}</main>
-        </ToastProvider>
+        </ToastProvider>  {/* ← 요기 */}
       </body>
     </html>
   )

@@ -1,7 +1,9 @@
-export function Card({ children }: { children: React.ReactNode }) {
-  return <div style={{ border: '1px solid #ccc', padding: '16px' }}>{children}</div>
+import * as React from 'react';
+
+export function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <div className={`border rounded-md p-4 shadow-sm ${className}`}>{children}</div>;
 }
 
-export function CardContent({ children }: { children: React.ReactNode }) {
-  return <div>{children}</div>
+export function CardContent({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <div className={className}>{children}</div>;
 }

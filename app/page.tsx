@@ -17,7 +17,7 @@ export default function 공사보고생성기() {
   const [내일공정, set내일공정] = useState<string[]>([])
   const [특이사항, set특이사항] = useState('금일 특이사항 없습니다.')
   const [결과, set결과] = useState('')
-  const { toast } = useToast()
+  const { show } = useToast()
 
   useEffect(() => {
     const saved현장명 = localStorage.getItem('현장명')
@@ -55,12 +55,12 @@ export default function 공사보고생성기() {
   const generate = () => {
     const full = `안녕하세요!^^\n[${현장명}] 보고드리겠습니다.🙂\n\n[오늘] ${오늘공정.join(', ')} 진행되었습니다.\n[내일] ${내일공정.join(', ')} 예정입니다.\n\n* ${특이사항}\n감사합니다 ^^`
     set결과(full)
-    toast({ description: '보고서가 생성되었습니다.' })
+    show({ description: '보고서가 생성되었습니다.' })
   }
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
-    toast({ description: '복사되었습니다.' })
+    show({ description: '복사되었습니다.' })
   }
 
   return (

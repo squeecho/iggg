@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
@@ -75,11 +76,19 @@ export default function 공사보고생성기() {
 
   return (
     <>
-      {/* Toast 컴포넌트를 최상단에 렌더링 */}
+      {/* 1) Toast 컴포넌트 */}
       <Toast />
+
+      {/* 2) 상단 로고 */}
+      <div className="flex justify-center py-4">
+        <img src="/logo.png" alt="이견공간 로고" className="h-12 w-auto" />
+      </div>
+
+      {/* 3) 메인 UI */}
       <div className="max-w-xl mx-auto p-4 space-y-6">
         <Card>
           <CardContent className="space-y-4">
+            {/* 현장명 입력 및 목록 */}
             <div>
               <Label>현장명</Label>
               <div className="flex gap-2">
@@ -94,10 +103,7 @@ export default function 공사보고생성기() {
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {현장목록.map(h => (
-                  <div
-                    key={h}
-                    className="flex items-center gap-1 border rounded px-2 py-1 text-sm"
-                  >
+                  <div key={h} className="flex items-center gap-1 border rounded px-2 py-1 text-sm">
                     <span onClick={() => set현장명(h)} className="cursor-pointer">{h}</span>
                     <button onClick={() => handle현장삭제(h)} className="text-red-500">✕</button>
                   </div>
@@ -105,6 +111,7 @@ export default function 공사보고생성기() {
               </div>
             </div>
 
+            {/* 오늘 공정 */}
             <div>
               <Label>오늘 공정</Label>
               <div className="flex flex-wrap gap-2">
@@ -121,6 +128,7 @@ export default function 공사보고생성기() {
               </div>
             </div>
 
+            {/* 내일 공정 */}
             <div>
               <Label>내일 공정</Label>
               <div className="flex flex-wrap gap-2">
@@ -137,6 +145,7 @@ export default function 공사보고생성기() {
               </div>
             </div>
 
+            {/* 특이사항 */}
             <div>
               <Label>특이사항</Label>
               <Textarea
@@ -146,12 +155,14 @@ export default function 공사보고생성기() {
               />
             </div>
 
+            {/* 보고서 생성 버튼 */}
             <Button onClick={generate} className="w-full active:scale-[0.98] transition">
               보고서 생성
             </Button>
           </CardContent>
         </Card>
 
+        {/* 결과 출력 */}
         {결과 && (
           <Card>
             <CardContent className="whitespace-pre-wrap space-y-2">

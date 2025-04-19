@@ -120,7 +120,7 @@ export default function 공사보고생성기() {
 
           {/* 오늘/내일 공정 */}
           <div>
-            <Label>오늘 공정</Label>
+            <Label>오늘 작업 공정</Label>
             <div className="flex flex-wrap gap-2">
               {공정항목.map(item => (
                 <Button
@@ -137,7 +137,7 @@ export default function 공사보고생성기() {
             </div>
           </div>
           <div>
-            <Label>내일 공정</Label>
+            <Label>내일 작업 공정</Label>
             <div className="flex flex-wrap gap-2">
               {공정항목.map(item => (
                 <Button

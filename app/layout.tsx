@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { ToastProvider } from '@/components/ui/use-toast'
 
 export const metadata = {
-  title: '공사보고 자동화',
+  title: '이견공간 공사보고 자동화',
   description: '클릭 한 번으로 공사보고 자동 생성',
 }
 

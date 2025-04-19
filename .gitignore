@@ -3,3 +3,5 @@ node_modules
 .DS_Store
 *.log
 Visual Studio Code.app
+.vercel
+Visual Studio Code.app/

@@ -6,6 +6,16 @@ import { ToastProvider } from '@/components/ui/use-toast'
 export const metadata = {
   title: '이견공간 공사보고 자동화',
   description: '클릭 한 번으로 공사보고 자동 생성',
+  openGraph: {
+    images: [
+      {
+        url: '/Thumb.png',
+        width: 1200,
+        height: 630,
+        alt: '이견공간 공사보고 자동화',
+      },
+    ],
+  },
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

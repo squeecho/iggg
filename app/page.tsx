@@ -8,12 +8,15 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
 
-const 공정항목 = [
-  '철거', '자재 입고', '가설', '목공', '전기', '금속', '설비', '방수', '양생',
-  '셀프 레벨링', '도장', '아트미장', '도배', '필름', '타일', '데코타일', '마루시공',
-  '덕트', '에어컨', '폐기물처리', '간판', '주방 입고', '가스',
-  '온수기 설치', '의탁자 입고', '준공 청소'
-]
+const 카테고리공정 = {
+  '기초': ['철거', '자재 입고', '가설', '보양', '폐기물처리'],
+  '본공사1': ['목공', '전기', '금속', '설비', '방수', '양생', '도장', '필름', '타일', '덕트', '잔마무리', '준공 청소'],
+  '본공사2': ['도배', '데코타일', '바닥마루', '아트미장'],
+  '외주': ['소방', '간판', '주방 입고', '가스', '온수기 설치', '의탁자 입고']
+}
+
+// 모든 공정항목을 하나의 배열로 합치기
+const 공정항목 = Object.values(카테고리공정).flat()
 
 export default function 공사보고생성기() {
   const { show } = useToast()
@@ -113,19 +116,26 @@ export default function 공사보고생성기() {
 
           {/* 오늘 공정 */}
           <div>
-            <Label>오늘 작업 공정</Label>
-            <div className="flex flex-wrap gap-2">
-              {공정항목.map(item => (
-                <Button
-                  key={item}
-                  variant={오늘공정.includes(item) ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => handleToggle(item, 오늘공정, set오늘공정)}
-                >
-                  {item}
-                </Button>
-              ))}
+            <div className="bg-[#FFF9E6] border rounded-md p-3 mb-3 shadow-sm">
+              <h3 className="text-[#222933] text-lg font-bold text-center">오늘 작업 공정</h3>
             </div>
+            {Object.entries(카테고리공정).map(([카테고리, 항목들]) => (
+              <div key={카테고리} className="mb-4 border rounded-md p-2 bg-gray-50">
+                <p className="text-md font-bold mb-2 pb-1 border-b">{카테고리}</p>
+                <div className="flex flex-wrap gap-2">
+                  {항목들.map(item => (
+                    <Button
+                      key={item}
+                      variant={오늘공정.includes(item) ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => handleToggle(item, 오늘공정, set오늘공정)}
+                    >
+                      {item}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* 다음 작업 일정 */}
@@ -146,19 +156,26 @@ export default function 공사보고생성기() {
 
           {/* 내일 공정 */}
           <div>
-            <Label>내일(월요일) 작업 공정</Label>
-            <div className="flex flex-wrap gap-2">
-              {공정항목.map(item => (
-                <Button
-                  key={item}
-                  variant={내일공정.includes(item) ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => handleToggle(item, 내일공정, set내일공정)}
-                >
-                  {item}
-                </Button>
-              ))}
+            <div className="bg-[#FFF9E6] border rounded-md p-3 mb-3 shadow-sm">
+              <h3 className="text-[#222933] text-lg font-bold text-center">내일(월요일) 작업 공정</h3>
             </div>
+            {Object.entries(카테고리공정).map(([카테고리, 항목들]) => (
+              <div key={카테고리} className="mb-4 border rounded-md p-2 bg-gray-50">
+                <p className="text-md font-bold mb-2 pb-1 border-b">{카테고리}</p>
+                <div className="flex flex-wrap gap-2">
+                  {항목들.map(item => (
+                    <Button
+                      key={item}
+                      variant={내일공정.includes(item) ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => handleToggle(item, 내일공정, set내일공정)}
+                    >
+                      {item}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* 특이사항 */}

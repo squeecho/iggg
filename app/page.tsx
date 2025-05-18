@@ -145,9 +145,10 @@ export default function 공사보고생성기() {
   // 다음 날짜 계산 함수
   const get다음날짜 = () => {
     if (남은일정.length === 0) {
-      // 첫 일정은 오늘 날짜
-      const today = new Date()
-      return `${today.getMonth() + 1}/${today.getDate()}`
+      // 첫 일정은 내일 날짜
+      const tomorrow = new Date()
+      tomorrow.setDate(tomorrow.getDate() + 1)
+      return `${tomorrow.getMonth() + 1}/${tomorrow.getDate()}`
     } else {
       // 이후 일정은 이전 일정 날짜 + 1일
       const 마지막일정 = 남은일정[남은일정.length - 1]
@@ -160,6 +161,17 @@ export default function 공사보고생성기() {
       
       return `${다음날짜.getMonth() + 1}/${다음날짜.getDate()}`
     }
+  }
+  
+  // 요일 구하기 함수
+  const get요일 = (날짜문자열: string) => {
+    const [월, 일] = 날짜문자열.split('/').map(Number)
+    const date = new Date()
+    date.setMonth(월 - 1)
+    date.setDate(일)
+    
+    const 요일 = ['일', '월', '화', '수', '목', '금', '토']
+    return 요일[date.getDay()]
   }
   
   const handle남은일정추가 = () => {
@@ -339,7 +351,8 @@ export default function 공사보고생성기() {
     if (공사마감임박 && 남은일정.length > 0) {
       txt += `\n\n■남은일정 안내`
       남은일정.forEach(일정 => {
-        txt += `\n${일정.날짜} - ${일정.작업}`
+        const 요일 = get요일(일정.날짜)
+        txt += `\n${일정.날짜}(${요일}) - ${일정.작업}`
       })
     }
     
@@ -534,7 +547,32 @@ export default function 공사보고생성기() {
               </div>
               
               {/* 일정 추가 */}
-              <div className="flex gap-2 mb-2">
+              <div className="flex gap-2 mb-2 items-center">
+                {남은일정.length === 0 ? (
+                  <div className="text-blue-600 font-medium min-w-[90px] text-center">
+                    {(() => {
+                      const tomorrow = new Date()
+                      tomorrow.setDate(tomorrow.getDate() + 1)
+                      const month = tomorrow.getMonth() + 1
+                      const date = tomorrow.getDate()
+                      const 요일 = ['일', '월', '화', '수', '목', '금', '토'][tomorrow.getDay()]
+                      return `${month}/${date}(${요일})`
+                    })()}
+                  </div>
+                ) : (
+                  <div className="text-blue-600 font-medium min-w-[90px] text-center">
+                    {(() => {
+                      const 마지막일정 = 남은일정[남은일정.length - 1]
+                      const [월, 일] = 마지막일정.날짜.split('/').map(Number)
+                      const 다음날짜 = new Date()
+                      다음날짜.setMonth(월 - 1)
+                      다음날짜.setDate(일)
+                      다음날짜.setDate(다음날짜.getDate() + 1)
+                      const 요일 = ['일', '월', '화', '수', '목', '금', '토'][다음날짜.getDay()]
+                      return `${다음날짜.getMonth() + 1}/${다음날짜.getDate()}(${요일})`
+                    })()}
+                  </div>
+                )}
                 <Input
                   value={임시작업}
                   onChange={e => set임시작업(e.target.value)}
@@ -551,7 +589,7 @@ export default function 공사보고생성기() {
                   남은일정.map((일정, index) => (
                     <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded-md">
                       <div>
-                        <span className="font-medium">{일정.날짜}</span> - {일정.작업}
+                        <span className="font-medium">{일정.날짜}{get요일(일정.날짜) && `(${get요일(일정.날짜)})`}</span> - {일정.작업}
                       </div>
                       <button 
                         onClick={() => handle남은일정삭제(index)} 

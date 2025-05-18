@@ -83,7 +83,6 @@ export default function 공사보고생성기() {
     }
   }, [])
 
-  // 현장명이 변경될 때 해당 현장의 남은 일정 불러오기
   useEffect(() => {
     if (현장명) {
       isLocalUpdate.current = true // 현장 변경에 의한 업데이트
@@ -92,6 +91,9 @@ export default function 공사보고생성기() {
       } else {
         set남은일정([])
       }
+      
+      // 현장명이 변경되면 템플릿명도 같은 값으로 설정
+      set템플릿명(현장명)
     }
   }, [현장명])
 
@@ -212,8 +214,8 @@ export default function 공사보고생성기() {
   
   // 템플릿 저장 함수
   const 템플릿저장 = () => {
-    if (!템플릿명) {
-      show('현장명을 입력해주세요.')
+    if (!현장명) {
+      show('현장을 먼저 선택해주세요.')
       return
     }
     
@@ -224,13 +226,12 @@ export default function 공사보고생성기() {
     
     const 업데이트된템플릿목록 = {
       ...템플릿목록,
-      [템플릿명]: [...남은일정]
+      [현장명]: [...남은일정]
     }
     
     set템플릿목록(업데이트된템플릿목록)
     localStorage.setItem('템플릿목록', JSON.stringify(업데이트된템플릿목록))
-    set템플릿명('')
-    show(`"${템플릿명}" 템플릿이 저장되었습니다.`)
+    show(`"${현장명}" 템플릿이 저장되었습니다.`)
   }
   
   // 템플릿 불러오기 함수
@@ -374,7 +375,12 @@ export default function 공사보고생성기() {
                   className="flex items-center gap-1 border rounded px-2 py-1 text-sm"
                 >
                   <span onClick={() => set현장명(h)} className="cursor-pointer">{h}</span>
-                  <button onClick={() => handle현장삭제(h)} className="text-red-500">✕</button>
+                  <button 
+                    onClick={() => handle현장삭제(h)} 
+                    className="text-red-500 hover:text-white hover:bg-red-500 ml-1 px-1.5 py-0.5 rounded text-xs transition-colors"
+                  >
+                    삭제
+                  </button>
                 </div>
               ))}
             </div>
@@ -482,15 +488,16 @@ export default function 공사보고생성기() {
                 
                 <div className="flex gap-2 mb-2">
                   <Input
-                    value={템플릿명}
-                    onChange={e => set템플릿명(e.target.value)}
+                    value={현장명}
+                    onChange={e => set현장명(e.target.value)}
                     placeholder="현장명"
                     className="flex-1"
+                    disabled
                   />
                   <Button 
                     variant="outline" 
                     onClick={템플릿저장}
-                    disabled={!템플릿명 || 남은일정.length === 0}
+                    disabled={!현장명 || 남은일정.length === 0}
                   >
                     현재 일정 저장
                   </Button>
@@ -505,10 +512,10 @@ export default function 공사보고생성기() {
                         <div className="flex items-center gap-2">
                           <button 
                             onClick={() => 템플릿삭제(이름)} 
-                            className="text-red-500 hover:text-red-700 text-sm px-1 h-6 w-6 flex items-center justify-center rounded-full hover:bg-red-50"
+                            className="text-white bg-red-500 hover:bg-red-600 text-xs px-2 py-1 rounded transition-colors"
                             title="템플릿 삭제"
                           >
-                            ✕
+                            삭제
                           </button>
                           <span className="font-medium">{이름}</span> ({일정.length}개 항목)
                         </div>
@@ -548,9 +555,9 @@ export default function 공사보고생성기() {
                       </div>
                       <button 
                         onClick={() => handle남은일정삭제(index)} 
-                        className="text-red-500 hover:text-red-700"
+                        className="text-white bg-red-500 hover:bg-red-600 text-xs px-2 py-1 rounded transition-colors"
                       >
-                        ✕
+                        삭제
                       </button>
                     </div>
                   ))

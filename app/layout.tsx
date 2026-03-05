@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useToast } from '@/components/ui/use-toast'
+import { useToast } from '@/components/ui/toast'
 import { Checkbox } from '@/components/ui/checkbox'
 
 // ✅ 수정: 본공사 1+2 통합, 단어 추가/수정
@@ -27,7 +27,7 @@ const 카테고리공정 = {
 const 공정항목 = Object.values(카테고리공정).flat()
 
 export default function 공사보고생성기() {
-  const { show } = useToast()
+  const { show, Toast } = useToast()
   const [현장명, set현장명] = useState('')
   const [현장목록, set현장목록] = useState<string[]>([])
   const [오늘공정, set오늘공정] = useState<string[]>([])
@@ -556,6 +556,7 @@ export default function 공사보고생성기() {
           </CardContent>
         </Card>
       )}
+      <Toast />
     </div>
   )
 }
